@@ -1,8 +1,13 @@
 {
     "lbl_title": "信息",
-    "lbl_name": "名稱",
-    "lbl_phone": "電話",
-    "lbl_email": "電子郵件",
-    "lbl_location": "地址",
-    "lbl_company": "公司"
+    "lbl_name": "姓名",
+    "lbl_phone": "电话",
+    "lbl_email": "邮箱",
+    "lbl_facebook": "Facebook",
+    "lbl_github": "GitHub",
+    "lbl_youtube": "YouTube",
+    "lbl_linkedin": "领英",
+    "lbl_tiktok": "抖音",
+    "lbl_zalo": "Zalo",
+    "lbl_location": "地址"
 }

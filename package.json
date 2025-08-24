@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/tchiphuong/CV#readme",
   "devDependencies": {
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.4.17"
   }
 }

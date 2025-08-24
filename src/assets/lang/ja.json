@@ -2,7 +2,12 @@
     "lbl_title": "情報",
     "lbl_name": "名前",
     "lbl_phone": "電話",
-    "lbl_email": "Email",
-    "lbl_location": "アドレス",
-    "lbl_company": "会社"
+    "lbl_email": "メール",
+    "lbl_facebook": "Facebook",
+    "lbl_github": "GitHub",
+    "lbl_youtube": "YouTube",
+    "lbl_linkedin": "LinkedIn",
+    "lbl_tiktok": "TikTok",
+    "lbl_zalo": "Zalo",
+    "lbl_location": "住所"
 }

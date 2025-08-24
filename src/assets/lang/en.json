@@ -1,8 +1,13 @@
 {
-    "lbl_title": "Infomation",
+    "lbl_title": "Information",
     "lbl_name": "Name",
     "lbl_phone": "Phone",
-    "lbl_email": "email",
-    "lbl_location": "address",
-    "lbl_company": "company"
+    "lbl_email": "Email",
+    "lbl_facebook": "Facebook",
+    "lbl_github": "GitHub",
+    "lbl_youtube": "YouTube",
+    "lbl_linkedin": "LinkedIn",
+    "lbl_tiktok": "TikTok",
+    "lbl_zalo": "Zalo",
+    "lbl_location": "Address"
 }

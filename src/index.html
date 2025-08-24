@@ -1,33 +1,115 @@
 <!DOCTYPE html>
-<html class="h-full">
+<html class="h-full" ng-app="profileApp">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Tap</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NFC Tap">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <!-- Ngăn chặn số điện thoại tự động được liên kết -->
+    <meta name="format-detection" content="telephone=no">
+
+    <title ng-bind="'Profile"></title>
+
+    <!-- iOS icons -->
+    <link rel="apple-touch-icon" href="./assets/img/logo.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./assets/img/logo.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="./assets/img/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/img/logo.png">
+
+    <!-- Màn hình khởi động -->
+    <link rel="apple-touch-startup-image" href="./assets/img/logo.png">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="./assets/img/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/inter.css">
     <link rel="stylesheet" href="./assets/css/tailwindcss.css">
+
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+    </style>
 </head>
-<body class="h-full dark:bg-zinc-800">
-    <div class="max-w-[430px] mx-auto bg-slate-50 dark:bg-zinc-900 dark:text-white overflow-y-scroll min-h-full">
-        <div class="px-3">
-            <div class="flex">
-                <div class="py-3 text-xl font-bold text-center uppercase" langKey="lbl_title">Infomation</div>
+<body class="h-full dark:bg-zinc-800" ng-controller="MainController">
+    <div class="mx-auto bg-slate-50 dark:bg-zinc-900 dark:text-white min-h-full safe-area-inset">
+        <div class="pb-safe">
+            <div class="flex px-3 items-center sticky top-0 bg-slate-50 dark:bg-zinc-900 z-10 shadow-md h-16">
+                <div class="py-3 text-xl font-bold text-center uppercase" langKey="lbl_title">{{translations.lbl_title || 'Information'}}</div>
                 <ul class="flex justify-end flex-grow py-3">
-                    <li class="px-1"><button id="btnChangeLang" langId="cn"><img class="w-8 h-8" src="./assets/img/lang-cn.png" alt=""></button></li>
-                    <li class="px-1"><button id="btnChangeLang" langId="en"><img class="w-8 h-8" src="./assets/img/lang-en.png" alt=""></button></li>
-                    <li class="px-1"><button id="btnChangeLang" langId="ja"><img class="w-8 h-8" src="./assets/img/lang-ja.png" alt=""></button></li>
-                    <li class="px-1"><button id="btnChangeLang" langId="vi"><img class="w-8 h-8" src="./assets/img/lang-vi.png" alt=""></button></li>
+                    <li class="px-1" ng-repeat="lang in ['cn', 'en', 'ja', 'vi']">
+                        <button ng-click="changeLanguage(lang)" class="transition-transform hover:scale-110" ng-class="currentLang === lang ? 'opacity-100' : 'opacity-80'">
+                            <img class="w-8 h-8" ng-src="./assets/img/lang-{{lang}}.png" alt="{{lang}}">
+                        </button>
+                    </li>
+                    <!-- Nút toggle Dark/Light -->
+                    <li class="px-1">
+                        <button ng-click="toggleTheme()" class="transition-transform hover:scale-110" ng-class="isDark ? 'opacity-100' : 'opacity-80'">
+                            <!-- Icon -->
+                            <img ng-if="!isDark" class="w-8 h-8" src="./assets/img/icon-moon.png" alt="Dark mode">
+                            <img ng-if="isDark" class="w-8 h-8" src="./assets/img/icon-sun.png" alt="Light mode">
+                        </button>
+                    </li>
+
                 </ul>
             </div>
-            <ul id="list-data" class="pb-10">
+            <ul class="container mx-auto p-3">
+                <!-- Error Message -->
+                <div ng-if="error" class="text-center text-red-500 py-4" ng-cloak>{{error}}</div>
+
+                <!-- Skeleton Loading -->
+                <div ng-if="isLoading" ng-cloak>
+                    <li class="h-20 my-3 bg-white shadow-lg dark:bg-zinc-800 rounded-xl animate-pulse" ng-repeat="i in [1,2,3,4,5]">
+                        <div class="flex items-center p-4">
+                            <div class="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                            <div class="flex-grow px-8">
+                                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-2"></div>
+                                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                            </div>
+                            <div class="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                        </div>
+                    </li>
+                </div>
+
+                <!-- User Data List -->
+                <!-- User Data List -->
+                <li ng-repeat="item in userData" class="h-20 my-3 cursor-pointer bg-white dark:bg-zinc-800 rounded-xl shadow-lg 
+           hover:opacity-90 hover:bg-zinc-50 dark:hover:bg-zinc-700 
+           active:scale-95 focus:shadow-inner transition-all duration-200" ng-cloak ng-if="!isLoading">
+
+                    <a href="" ng-click="handleDeepLink($event, item)" role="button" rel="noopener noreferrer">
+                        <div class="flex items-center p-4">
+
+                            <img ng-src="{{item.iconPath}}" alt="{{translations['lbl_' + item.key] || item.key}}" class="h-12 w-12 object-contain" err-src="./assets/img/default.png">
+
+                            <div class="flex-grow px-8 overflow-hidden">
+                                <div class="text-xl font-bold" langKey="lbl_{{item.key}}">
+                                    {{translations['lbl_' + item.key] || item.key}}
+                                </div>
+                                <div class="text-base italic truncate max-w-xs" title="{{item.decodedValue}}">
+                                    {{item.decodedValue}}
+                                </div>
+                            </div>
+
+                            <!-- Chevron -->
+                            <div class="text-gray-400 dark:text-gray-300">
+                                <i class="fa fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <!-- Scripts -->
+    <script src="./assets/vendor/angular/angular.min.js"></script>
     <script src="./assets/js/main.js"></script>
 </body>
 </html>

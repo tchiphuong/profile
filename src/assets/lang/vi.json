@@ -2,7 +2,12 @@
     "lbl_title": "Thông tin",
     "lbl_name": "Họ tên",
     "lbl_phone": "Số điện thoại",
-    "lbl_email": "địa chỉ email",
-    "lbl_location": "Địa chỉ",
-    "lbl_company": "Công ty"
+    "lbl_email": "Email",
+    "lbl_facebook": "Facebook",
+    "lbl_github": "GitHub",
+    "lbl_youtube": "YouTube",
+    "lbl_linkedin": "LinkedIn",
+    "lbl_tiktok": "TikTok",
+    "lbl_zalo": "Zalo",
+    "lbl_location": "Địa chỉ"
 }
